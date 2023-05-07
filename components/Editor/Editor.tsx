@@ -1,4 +1,5 @@
 import cx from "classnames";
+import { useEffect } from "react";
 
 import { CodeNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
@@ -43,7 +44,8 @@ type EditorProps = {
 };
 
 export function Editor(props: EditorProps) {
-  const content = localStorage.getItem(EDITOR_NAMESPACE);
+  const content = typeof window !== "undefined" ? window.localStorage.getItem(EDITOR_NAMESPACE) : false;
+
 
   return (
     <div
