@@ -44,7 +44,7 @@ type EditorProps = {
 };
 
 export function Editor(props: EditorProps) {
-  const content = typeof window !== "undefined" ? window.localStorage.getItem(EDITOR_NAMESPACE) : false;
+  const content = typeof window !== "undefined" ? window.localStorage.getItem(EDITOR_NAMESPACE) : null;
 
 
   return (

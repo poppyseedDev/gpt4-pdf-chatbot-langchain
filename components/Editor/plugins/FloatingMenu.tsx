@@ -4,7 +4,7 @@ import { $isLinkNode } from "@lexical/link";
 import { $getSelection, FORMAT_TEXT_COMMAND, LexicalEditor } from "lexical";
 import { computePosition } from "@floating-ui/dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-
+import { Main } from "next/document";
 import { IconButton } from "../../IconButton";
 
 import { $isRangeSelected } from "../utils/$isRangeSelected";
@@ -111,9 +111,9 @@ function FloatingMenu({ show, ...props }: FloatingMenuProps) {
   );
 }
 
-const ANCHOR_ELEMENT = document.body;
-
 export function FloatingMenuPlugin() {
+  if (typeof window === "undefined") return null;
+  else {
   const [show, setShow] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isCode, setIsCode] = useState(false);
@@ -121,6 +121,8 @@ export function FloatingMenuPlugin() {
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
+
+  const ANCHOR_ELEMENT = document.body;
 
   const { isPointerDown, isKeyDown } = useUserInteractions();
   const [editor] = useLexicalComposerContext();
@@ -178,4 +180,5 @@ export function FloatingMenuPlugin() {
     />,
     ANCHOR_ELEMENT
   );
+  }
 }
