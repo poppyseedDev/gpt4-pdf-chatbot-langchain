@@ -1,6 +1,4 @@
 import cx from "classnames";
-import { useEffect } from "react";
-
 import { CodeNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
@@ -43,7 +41,7 @@ type EditorProps = {
   className?: string;
 };
 
-export function Editor(props: EditorProps) {
+export default function Editor(props: EditorProps) {
   const content = typeof window !== "undefined" ? window.localStorage.getItem(EDITOR_NAMESPACE) : null;
 
 

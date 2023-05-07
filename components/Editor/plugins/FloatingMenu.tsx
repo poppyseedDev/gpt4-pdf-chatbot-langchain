@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { $isLinkNode } from "@lexical/link";
 import { $getSelection, FORMAT_TEXT_COMMAND, LexicalEditor } from "lexical";
 import { computePosition } from "@floating-ui/dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { Main } from "next/document";
 import { IconButton } from "../../IconButton";
 
 import { $isRangeSelected } from "../utils/$isRangeSelected";
@@ -48,7 +47,7 @@ function FloatingMenu({ show, ...props }: FloatingMenuProps) {
       });
     // anchorOffset, so that we sync the menu position with
     // native selection (if user selects two ranges consecutively)
-  }, [show, nativeSel, nativeSel?.anchorOffset]);
+  }, [show, nativeSel, nativeSel?.anchorOffset]);    
 
   return (
     <div
@@ -112,8 +111,9 @@ function FloatingMenu({ show, ...props }: FloatingMenuProps) {
 }
 
 export function FloatingMenuPlugin() {
-  if (typeof window === "undefined") return null;
-  else {
+  const ref = useRef<Element | null>(null)
+
+  const [mounted, setMounted] = useState(false)
   const [show, setShow] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isCode, setIsCode] = useState(false);
@@ -122,7 +122,10 @@ export function FloatingMenuPlugin() {
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
 
-  const ANCHOR_ELEMENT = document.body;
+  useEffect(() => {
+    ref.current = document.querySelector<HTMLElement>("#myportal")
+    setMounted(true)
+  }, [])
 
   const { isPointerDown, isKeyDown } = useUserInteractions();
   const [editor] = useLexicalComposerContext();
@@ -167,7 +170,7 @@ export function FloatingMenuPlugin() {
     updateFloatingMenu();
   }, [isPointerDown, isKeyDown, updateFloatingMenu]);
 
-  return createPortal(
+  return (mounted && ref.current) ? createPortal(
     <FloatingMenu
       editor={editor}
       show={show}
@@ -178,7 +181,6 @@ export function FloatingMenuPlugin() {
       isStrikethrough={isStrikethrough}
       isUnderline={isUnderline}
     />,
-    ANCHOR_ELEMENT
-  );
+    ref.current)
+   : null;
   }
-}
