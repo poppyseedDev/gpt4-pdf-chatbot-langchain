@@ -12,6 +12,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+//import { TextEditor } from '@/components/textEditor/textEditor';
+import { Editor } from "@/components/Editor";
 
 export default function Home() {
   const [query, setQuery] = useState<string>('');
@@ -251,6 +253,10 @@ export default function Home() {
                     )}
                   </button>
                 </form>
+              </div>
+              <div className="max-w-4xl mx-auto px-8 my-16">
+                <h1 className="text-3xl font-serif">Lexical React Demo</h1>
+                <Editor className="my-8" />
               </div>
             </div>
             {error && (
